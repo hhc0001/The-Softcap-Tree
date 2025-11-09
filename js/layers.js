@@ -6,8 +6,8 @@ addLayer("P", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-    color: "#4BDC13",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
+    color: "#CCFCCF",
+    requires: new Decimal(1), // Can be a function that takes requirement increases into account
     resource: "声望点数", // Name of prestige currency
     baseResource: "点数", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -24,5 +24,40 @@ addLayer("P", {
     hotkeys: [
         {key: "p", description: "P：重置获得声望点数", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+    upgrades: {
+        11: {
+            title: "PU11",
+            description: "点数获取 *2",
+            cost: new Decimal(1),
+            effect() {
+                return 2
+            },
+            effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"}
+        },
+        12: {
+            title: "PU12",
+            description: "点数加成点数",
+            cost: new Decimal(3),
+            unlocked() {
+                return hasUpgrade(this.layer, 11)
+            },
+            effect() {
+                return player.points.add(2).log(2)
+            },
+            effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"}
+        },
+        13: {
+            title: "PU13",
+            description: "PSC1 的开始基于声望点数延后",
+            cost: new Decimal(10),
+            unlocked() {
+                return hasUpgrade(this.layer, 12)
+            },
+            effect() {
+                return player[this.layer].points.add(1).pow(0.75)
+            },
+            effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"}
+        }
+    },
     layerShown(){return true}
 })

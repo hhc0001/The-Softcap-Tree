@@ -248,7 +248,7 @@ function NaNcheck(data) {
 			if (!NaNalert) {
 				clearInterval(interval);
 				NaNalert = true;
-				alert("Invalid value found in player, named '" + item + "'. Please let the creator of this mod know! You can refresh the page, and you will be un-NaNed.")
+				alert("你的 '" + item + "' 遭到了 NaNeNaN！把作者踢一下，然后刷新以修复这个 bug")
 				return
 			}
 		}
