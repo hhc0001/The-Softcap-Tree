@@ -37,23 +37,23 @@ function canGenPoints() {
 	return true // it is always true
 }
 
-function PSC1() {
+function pSC1() {
 	let point = new Decimal(1)
 	if(hasUpgrade('P', 13)) point = point.mul(upgradeEffect('P', 13))
 	return point
 }
 
-function PSC1Effect() {
-	return player.points.sub(PSC1()).add(1).root(1.6)
+function pSC1Effect() {
+	return player.points.sub(pSC1()).add(1).root(1.6)
 }
 
-function PSC2() {
+function pSC2() {
 	let point = new Decimal(20)
 	return point
 }
 
-function PSC2Effect() {
-	return player.points.sub(PSC2()).add(10).log10().pow(3)
+function pSC2Effect() {
+	return player.points.sub(pSC2()).add(10).log10().pow(3)
 }
 
 // Calculate points/sec!
@@ -64,8 +64,8 @@ function getPointGen() {
 	if(hasUpgrade('P', 12)) gain = gain.mul(upgradeEffect('P', 12))
 
 	// Softcaps
-	if(player.points.gte(PSC1())) gain = gain.dividedBy(PSC1Effect())
-	if(player.points.gte(PSC2())) gain = gain.dividedBy(PSC2Effect())
+	if(player.points.gte(pSC1())) gain = gain.dividedBy(pSC1Effect())
+	if(player.points.gte(pSC2())) gain = gain.dividedBy(pSC2Effect())
 
 	// Effects After Softcap
 	return gain
