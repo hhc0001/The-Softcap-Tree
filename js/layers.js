@@ -42,7 +42,9 @@ addLayer("P", {
                 return hasUpgrade(this.layer, 11)
             },
             effect() {
-                return player.points.add(2).log(2)
+                let mult = player.points.add(2).log(2)
+                if(mult.gte(PU12SC1())) mult = PU12SC1Effect(mult)
+                return mult
             },
             effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"}
         },
@@ -54,10 +56,21 @@ addLayer("P", {
                 return hasUpgrade(this.layer, 12)
             },
             effect() {
-                return player[this.layer].points.add(1).pow(0.75)
+                let mult = player[this.layer].points.add(1).pow(0.75)
+                if(mult.gte(PU13SC1())) mult = PU13SC1Effect(mult)
+                return mult
             },
             effectDisplay() {return format(upgradeEffect(this.layer, this.id)) + "x"}
-        }
+        },
+        21: {
+            title: "PU21",
+            description: "P 增幅 p",
+            cost: new Decimal(20),
+            unlocked() {
+                return hasUpgrade(this.layer, 13)
+            },
+            //effect()
+        },
     },
     layerShown(){return true}
 })

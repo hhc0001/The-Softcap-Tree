@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "The Softcap Tree",
+	name: "The (Softcapped) Tree",
 	author: "hhc0001",
 	pointsName: "点数",
 	modFiles: ["layers.js", "tree.js"],
@@ -12,14 +12,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0",
+	num: "0-0",
 	name: "",
-	pre: "1"
+	pre: "1.1"
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0 Pre-Release 1</h3><br>
-		- 加入了点数软上限 1<br>
+  <h3>v0-0 Pre-Release 1.1</h3><br>
+	  - 加入了 pSC2，pSC3，PU12SC1 和 PU13SC1<br>
+		- 怎么只有软上限啊<br>
+	<h3>v0-0 Pre-Release 1</h3><br>
+		- 加入了 pSC1<br>
 		- 加入了 P 层与 3 个 PU<br>`
 
 let winText = `游戏的终局...吗？`
@@ -37,23 +40,30 @@ function canGenPoints() {
 	return true // it is always true
 }
 
+// pSC
 function pSC1() {
 	let point = new Decimal(1)
 	if(hasUpgrade('P', 13)) point = point.mul(upgradeEffect('P', 13))
 	return point
 }
-
 function pSC1Effect() {
 	return player.points.sub(pSC1()).add(1).root(1.6)
 }
 
 function pSC2() {
-	let point = new Decimal(20)
+	let point = new Decimal(5)
 	return point
 }
-
 function pSC2Effect() {
 	return player.points.sub(pSC2()).add(10).log10().pow(3)
+}
+
+function pSC3() {
+	let point = new Decimal(10)
+	return point
+}
+function pSC3Effect(gain) {
+	return gain.dividedBy(pSC3()).root(1.6).mul(pSC3())
 }
 
 // Calculate points/sec!
@@ -66,9 +76,28 @@ function getPointGen() {
 	// Softcaps
 	if(player.points.gte(pSC1())) gain = gain.dividedBy(pSC1Effect())
 	if(player.points.gte(pSC2())) gain = gain.dividedBy(pSC2Effect())
+	if(player.points.gte(pSC3())) gain = pSC3Effect(gain)
 
 	// Effects After Softcap
 	return gain
+}
+
+// PU12SC
+function PU12SC1() {
+	let point = new Decimal(3)
+	return point
+}
+function PU12SC1Effect(mult) {
+	return (mult.dividedBy(PU12SC1()).root(2)).mul(PU12SC1())
+}
+
+// PU13SC
+function PU13SC1() {
+	let point = new Decimal(5)
+	return point
+}
+function PU13SC1Effect(mult) {
+	return (mult.dividedBy(PU13SC1()).add(10).log10()).mul(PU13SC1())
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values
@@ -77,7 +106,8 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"作者曾经被里程碑之树的更新坑过一次，所以我要在这里放一个文字警示后人，不要以为 Endgame 了就可以不玩了"
+	"作者曾经被里程碑之树的更新坑过一次，所以我要在这里放一个文字警示后人，不要以为 Endgame 了就可以不玩了",
+	"如果你看不懂升级效果请出门左转找 Repo 里面的 NOTATIONS.md，里面有详细的软上限介绍"
 ]
 
 // Determines when the game "ends"
