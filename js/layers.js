@@ -69,7 +69,7 @@ addLayer("P", {
             unlocked() {
                 return hasUpgrade(this.layer, 13)
             },
-            //effect()
+            effect() {}
         },
     },
     layerShown(){return true}
