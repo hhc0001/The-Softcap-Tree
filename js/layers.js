@@ -36,7 +36,7 @@ addLayer("P", {
         },
         12: {
             title: "PU12",
-            description: "点数加成点数",
+            description: "p 加成 p 的获取",
             cost: new Decimal(3),
             unlocked() {
                 return hasUpgrade(this.layer, 11)
@@ -64,7 +64,7 @@ addLayer("P", {
         },
         21: {
             title: "PU21",
-            description: "P 增幅 p",
+            description: "P 加成 p 的获取",
             cost: new Decimal(20),
             unlocked() {
                 return hasUpgrade(this.layer, 13)
